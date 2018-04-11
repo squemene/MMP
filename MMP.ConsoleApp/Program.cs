@@ -10,6 +10,10 @@ namespace MMP.ConsoleApp
     {
         static void Main(string[] args)
         {
+            using (var ctx = new CoreClassLibrary.MMPEntities())
+            {
+                Console.WriteLine(ctx.Users.Count());
+            }
         }
     }
 }

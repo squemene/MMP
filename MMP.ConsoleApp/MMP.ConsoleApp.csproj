@@ -56,5 +56,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MMP.CoreClassLibrary\MMP.CoreClassLibrary.csproj">
+      <Project>{8bf89ce0-cb88-4529-a894-b2a126b8f589}</Project>
+      <Name>MMP.CoreClassLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
