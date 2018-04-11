@@ -12,7 +12,7 @@ namespace MMP.ConsoleApp
         {
             using (var ctx = new CoreClassLibrary.MMPEntities())
             {
-                Console.WriteLine(ctx.Users.Count());
+                ToolsLibrary.Logger.Debug("" + ctx.Users.Count());
             }
         }
     }

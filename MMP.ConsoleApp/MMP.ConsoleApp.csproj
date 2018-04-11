@@ -61,6 +61,10 @@
       <Project>{8bf89ce0-cb88-4529-a894-b2a126b8f589}</Project>
       <Name>MMP.CoreClassLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ToolsLibrary\ToolsLibrary.csproj">
+      <Project>{252fc9f8-9814-4de9-a5aa-26603ecba3eb}</Project>
+      <Name>ToolsLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
