@@ -18,12 +18,18 @@ namespace MMP.CoreClassLibrary
         public MMPEntities()
             : base("name=MMPEntities")
         {
+    		OnContextCreated();
         }
     
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            //throw new UnintentionalCodeFirstException();
-        }
+    	public MMPEntities(string nameOrConnectionString) 
+            : base(nameOrConnectionString)
+    	{
+    		OnContextCreated(nameOrConnectionString);
+    	}
+    	
+    	partial void OnContextCreated();
+    
+        partial void OnContextCreated(string nameOrConnectionString);
     
         public virtual DbSet<User> Users { get; set; }
     }

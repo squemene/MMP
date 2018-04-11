@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\MMPDatabaseInitializer.cs" />
     <Compile Include="Migrations\201804111436337_InitialCreate.cs" />
     <Compile Include="Migrations\201804111436337_InitialCreate.Designer.cs">
       <DependentUpon>201804111436337_InitialCreate.cs</DependentUpon>
@@ -69,6 +70,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MMPModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Partial\MMPModel.Context.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User.cs">
       <DependentUpon>MMPModel.tt</DependentUpon>
@@ -114,5 +116,6 @@
       <Name>ToolsLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
