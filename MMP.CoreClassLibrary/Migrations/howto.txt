@@ -1,0 +1,16 @@
+﻿Ajouter un nouvel élément de type "ADO.NET Entity Data Model"
+et choissisez "EF designer à partir de la base de données"
+Dans l'assistant, sélection comme DB : "(LocalDb)\MSSQLLocalDB"
+
+Dans la Console du Gestionnaire de package : 
+Utiliser la commande Enable-Migrations de la console du gestionnaire de package pour ajouter une configuration de migrations
+Puis à chaque modification du modele, lancer la commande 'Add-Migration' dans la meme console
+Pour mettre à jour la BdD, il faut lancer la commande 'Update-Database'
+
+/!\ le paramétrage de migration se situe dans le projet marqué comme projet de démarrage
+Dans le cas où la migration se situe dans un autre projet, il faut spéccifier le projet cible
+
+Add-Migration InitialCreate -force -project MMP.CoreClassLibrary
+
+POur forcer un migration :
+Update-Database -TargetMigration InitialCreate -force -project MMP.CoreClassLibrary
