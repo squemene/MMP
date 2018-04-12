@@ -4,8 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2e685d7225d44990aca4ca27324722de" Name="Diagramme de classes" >
+      <Diagram DiagramId="2e685d7225d44990aca4ca27324722de" Name="Diagramme de classes" ShowGrid="true" DisplayType="true" >
         <EntityTypeShape EntityType="MMPModel.Person" Width="1.5" PointX="7" PointY="1.5" />
+        <EntityTypeShape EntityType="MMPModel.Book" Width="1.5" PointX="7" PointY="4.5" />
+        <AssociationConnector Association="MMPModel.PersonBook" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

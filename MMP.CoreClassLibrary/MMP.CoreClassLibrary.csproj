@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Book.cs">
+      <DependentUpon>MMPModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookEnumType.cs">
+      <DependentUpon>MMPModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DB\MMPDatabaseInitializer.cs" />
     <Compile Include="Migrations\201804120906224_InitialCreate.cs" />
     <Compile Include="Migrations\201804120906224_InitialCreate.Designer.cs">

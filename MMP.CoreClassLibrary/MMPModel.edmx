@@ -4,27 +4,89 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MMPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Erreurs détectées durant la génération :
-avertissement 6002: La table/vue 'BddTest.dbo.PeopleView' n'a pas de clé primaire définie. La clé a été déduite et la définition a été créée en tant que table/vue en lecture seule.-->
-        <EntityContainer Name="MMPModelStoreContainer">
-        </EntityContainer>
+    <Schema Namespace="MMPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="MMPModelStoreContainer" />
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MMPEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="People" EntityType="MMPModel.Person" />
+          <EntitySet Name="Books" EntityType="MMPModel.Book" />
+          <AssociationSet Name="PersonBook" Association="MMPModel.PersonBook">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Book" EntitySet="Books" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Person">
+          <Documentation>
+            <Summary>Classe représentant une personne</Summary>
+          </Documentation>
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FullName" Type="String" Nullable="false" />
-          <Property Name="Email" Type="String" Nullable="true" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" >
+            <Documentation>
+              <Summary>L'identifiant unique de la personne</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="FullName" Type="String" Nullable="false" >
+            <Documentation>
+              <Summary>Le nom complet de la personne</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Email" Type="String" Nullable="true" DefaultValue="noreply@mail.com" >
+            <Documentation>
+              <Summary>L'adresse email de la personne</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" >
+            <Documentation>
+              <Summary>La date de création de la personne dans le système</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="Books" Relationship="MMPModel.PersonBook" FromRole="Person" ToRole="Book" >
+            <Documentation>
+              <Summary>La liste des livres écrits par la personne</Summary>
+            </Documentation>
+          </NavigationProperty>
         </EntityType>
+        <EnumType Name="BookEnumType" >
+          <Member Name="Book" />
+          <Member Name="Novel" />
+        </EnumType>
+        <EntityType Name="Book">
+          <Documentation>
+            <Summary>Classe représentant un livre</Summary>
+          </Documentation>
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" >
+            <Documentation>
+              <Summary>L'identifiant unique du livre</Summary>
+            </Documentation>
+          </Property>
+          <Property Name="Title" Type="String" Nullable="false" >
+            <Documentation>
+              <Summary>Le titre du livre</Summary>
+            </Documentation>
+          </Property>
+          <NavigationProperty Name="Author" Relationship="MMPModel.PersonBook" FromRole="Book" ToRole="Person" >
+            <Documentation>
+              <Summary>L'auteur du livre</Summary>
+            </Documentation>
+          </NavigationProperty>
+          <Property Name="Type" Type="MMPModel.BookEnumType" Nullable="false" >
+            <Documentation>
+              <Summary>Le type du livre</Summary>
+            </Documentation>
+          </Property>
+        </EntityType>
+        <Association Name="PersonBook">
+          <End Type="MMPModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="MMPModel.Book" Role="Book" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -46,7 +108,7 @@ avertissement 6002: La table/vue 'BddTest.dbo.PeopleView' n'a pas de clé primai
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
       </DesignerInfoPropertySet>

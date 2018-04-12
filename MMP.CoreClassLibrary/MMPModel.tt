@@ -1,7 +1,7 @@
 ﻿<#@ template language="C#" debug="false" hostspecific="true"#>
 <#@ include file="EF6.Utility.CS.ttinclude"#><#@ 
  output extension=".cs"#><#
-
+/**/
 const string inputFile = @"MMPModel.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
 var code = new CodeGenerationTools(this);
@@ -26,17 +26,15 @@ if (!typeMapper.VerifyCaseInsensitiveTypeUniqueness(typeMapper.GetAllGlobalItems
 
 WriteHeader(codeStringGenerator, fileManager);
 BeginNamespace(code, modelNamespace);
-/*
 #>
 /// <summary>
 /// Interface implémentée par toutes les entités du modèle
 /// </summary>
-public interface IEntity
+public partial interface IEntity
 {
 }
 <#
-*/
-EndNamespace(/*code, */modelNamespace);
+EndNamespace(modelNamespace);
 
 foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection))
 {
@@ -47,7 +45,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 /// <summary>
 /// <#=codeStringGenerator.SummaryComment(entity)#>
 /// </summary><#=codeStringGenerator.LongDescriptionCommentElement(entity, 0)#>
-<#=codeStringGenerator.EntityClassOpening(entity)#>
+<#=codeStringGenerator.EntityClassOpening(entity)#> : IEntity
 {
 <#
     var propertiesWithDefaultValues = typeMapper.GetPropertiesWithDefaultValues(entity);
@@ -56,7 +54,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 
     if (propertiesWithDefaultValues.Any() || collectionNavigationProperties.Any() || complexProperties.Any())
     {
-		region.Begin("Constructeurs", 1);
+		region.Begin("Constructeurs", 2);
 #>
 
 	/// <summary>
@@ -89,13 +87,13 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 #>
     }
 <#
-	region.End();
+	region.End(2);
     }
 
     var simpleProperties = typeMapper.GetSimpleProperties(entity);
     if (simpleProperties.Any())
     {
-		region.Begin("Propriétés simples");
+		region.Begin("Propriétés simples", 2);
 
         foreach (var edmProperty in simpleProperties)
         {
@@ -107,12 +105,12 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     <#=codeStringGenerator.Property(edmProperty)#>
 <#
         }
-		region.End();
+		region.End(2);
     }
 
     if (complexProperties.Any())
     {
-		region.Begin("Propriétés complexes");
+		region.Begin("Propriétés complexes", 2);
 
         foreach(var complexProperty in complexProperties)
         {
@@ -124,13 +122,13 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     <#=codeStringGenerator.Property(complexProperty)#>
 <#
         }
-		region.End();
+		region.End(2);
     }
 
     var navigationProperties = typeMapper.GetNavigationProperties(entity);
     if (navigationProperties.Any())
     {
-		region.Begin("Propriétés de navigation");
+		region.Begin("Propriétés de navigation", 2);
 
         foreach (var navigationProperty in navigationProperties)
         {
@@ -148,7 +146,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     <#=codeStringGenerator.NavigationProperty(navigationProperty)#>
 <#
         }
-		region.End();
+		region.End(2);
     }
 #>
 }
