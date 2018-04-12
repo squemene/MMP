@@ -6,24 +6,47 @@ const string inputFile = @"MMPModel.edmx";
 var textTransform = DynamicTextTransformation.Create(this);
 var code = new CodeGenerationTools(this);
 var ef = new MetadataTools(this);
+var region = new CodeRegion(this);
 var typeMapper = new TypeMapper(code, ef, textTransform.Errors);
+var loader = new EdmMetadataLoader(textTransform.Host, textTransform.Errors);
+var itemCollection = loader.CreateEdmItemCollection(inputFile);
+var modelNamespace = loader.GetModelNamespace(inputFile);
 var	fileManager = EntityFrameworkTemplateFileManager.Create(this);
-var itemCollection = new EdmMetadataLoader(textTransform.Host, textTransform.Errors).CreateEdmItemCollection(inputFile);
 var codeStringGenerator = new CodeStringGenerator(code, typeMapper, ef);
 
+var container = itemCollection.OfType<EntityContainer>().FirstOrDefault();
+if (container == null)
+{
+    return string.Empty;
+}
 if (!typeMapper.VerifyCaseInsensitiveTypeUniqueness(typeMapper.GetAllGlobalItems(itemCollection), inputFile))
 {
     return string.Empty;
 }
 
 WriteHeader(codeStringGenerator, fileManager);
+BeginNamespace(code, modelNamespace);
+/*
+#>
+/// <summary>
+/// Interface implémentée par toutes les entités du modèle
+/// </summary>
+public interface IEntity
+{
+}
+<#
+*/
+EndNamespace(/*code, */modelNamespace);
 
 foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection))
 {
     fileManager.StartNewFile(entity.Name + ".cs");
-    BeginNamespace(code);
+    BeginNamespace(code, modelNamespace);
 #>
-<#=codeStringGenerator.UsingDirectives(inHeader: false)#>
+<#=codeStringGenerator.UsingDirectives(false, true)#>
+/// <summary>
+/// <#=codeStringGenerator.SummaryComment(entity)#>
+/// </summary><#=codeStringGenerator.LongDescriptionCommentElement(entity, 0)#>
 <#=codeStringGenerator.EntityClassOpening(entity)#>
 {
 <#
@@ -33,7 +56,12 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 
     if (propertiesWithDefaultValues.Any() || collectionNavigationProperties.Any() || complexProperties.Any())
     {
+		region.Begin("Constructeurs", 1);
 #>
+
+	/// <summary>
+	/// Initialise un nouvel objet <#=code.Escape(entity)#>
+	/// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
     public <#=code.Escape(entity)#>()
     {
@@ -60,40 +88,50 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
         }
 #>
     }
-
 <#
+	region.End();
     }
 
     var simpleProperties = typeMapper.GetSimpleProperties(entity);
     if (simpleProperties.Any())
     {
+		region.Begin("Propriétés simples");
+
         foreach (var edmProperty in simpleProperties)
         {
 #>
+
+	/// <summary>
+    /// <#=codeStringGenerator.SummaryComment(edmProperty)#>
+    /// </summary><#=codeStringGenerator.LongDescriptionCommentElement(edmProperty, region.CurrentIndentLevel)#>
     <#=codeStringGenerator.Property(edmProperty)#>
 <#
         }
+		region.End();
     }
 
     if (complexProperties.Any())
     {
-#>
+		region.Begin("Propriétés complexes");
 
-<#
         foreach(var complexProperty in complexProperties)
         {
 #>
+
+	/// <summary>
+    /// <#=codeStringGenerator.SummaryComment(complexProperty)#>
+    /// </summary><#=codeStringGenerator.LongDescriptionCommentElement(complexProperty, region.CurrentIndentLevel)#>
     <#=codeStringGenerator.Property(complexProperty)#>
 <#
         }
+		region.End();
     }
 
     var navigationProperties = typeMapper.GetNavigationProperties(entity);
     if (navigationProperties.Any())
     {
-#>
+		region.Begin("Propriétés de navigation");
 
-<#
         foreach (var navigationProperty in navigationProperties)
         {
             if (navigationProperty.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many)
@@ -103,22 +141,27 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 <#
             }
 #>
+
+	/// <summary>
+    /// <#=codeStringGenerator.SummaryComment(navigationProperty)#>
+    /// </summary><#=codeStringGenerator.LongDescriptionCommentElement(navigationProperty, region.CurrentIndentLevel)#>
     <#=codeStringGenerator.NavigationProperty(navigationProperty)#>
 <#
         }
+		region.End();
     }
 #>
 }
 <#
-    EndNamespace(code);
+    EndNamespace(/*code, */modelNamespace);
 }
 
 foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollection))
 {
     fileManager.StartNewFile(complex.Name + ".cs");
-    BeginNamespace(code);
+    BeginNamespace(code, modelNamespace);
 #>
-<#=codeStringGenerator.UsingDirectives(inHeader: false, includeCollections: false)#>
+<#=codeStringGenerator.UsingDirectives(false, false)#>
 <#=Accessibility.ForType(complex)#> partial class <#=code.Escape(complex)#>
 {
 <#
@@ -156,7 +199,11 @@ foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollectio
         foreach(var edmProperty in simpleProperties)
         {
 #>
-    <#=codeStringGenerator.Property(edmProperty)#>
+    
+	/// <summary>
+    /// <#=codeStringGenerator.SummaryComment(edmProperty)#>
+    /// </summary><#=codeStringGenerator.LongDescriptionCommentElement(edmProperty, 1)#>
+	<#=codeStringGenerator.Property(edmProperty)#>
 <#
         }
     }
@@ -176,15 +223,15 @@ foreach (var complex in typeMapper.GetItemsToGenerate<ComplexType>(itemCollectio
 #>
 }
 <#
-    EndNamespace(code);
+    EndNamespace(/*code, */modelNamespace);
 }
 
 foreach (var enumType in typeMapper.GetEnumItemsToGenerate(itemCollection))
 {
     fileManager.StartNewFile(enumType.Name + ".cs");
-    BeginNamespace(code);
+    BeginNamespace(code, modelNamespace);
 #>
-<#=codeStringGenerator.UsingDirectives(inHeader: false, includeCollections: false)#>
+<#=codeStringGenerator.UsingDirectives(false, false)#>
 <#
     if (typeMapper.EnumIsFlags(enumType))
     {
@@ -213,7 +260,7 @@ foreach (var enumType in typeMapper.GetEnumItemsToGenerate(itemCollection))
 #>
 }
 <#
-    EndNamespace(code);
+    EndNamespace(/*code, */modelNamespace);
 }
 
 fileManager.Process();
@@ -221,39 +268,46 @@ fileManager.Process();
 #>
 <#+
 
+
+
+
+
 public void WriteHeader(CodeStringGenerator codeStringGenerator, EntityFrameworkTemplateFileManager fileManager)
 {
     fileManager.StartHeader();
 #>
 //------------------------------------------------------------------------------
 // <auto-generated>
-// <#=CodeGenerationTools.GetResourceString("Template_GeneratedCodeCommentLine1")#>
+// <#=CodeGenerationTools.GetResourceString("Template_GeneratedCodeCommentLine1")#> @<#=DateTime.Now#>
 //
 // <#=CodeGenerationTools.GetResourceString("Template_GeneratedCodeCommentLine2")#>
 // <#=CodeGenerationTools.GetResourceString("Template_GeneratedCodeCommentLine3")#>
 // </auto-generated>
 //------------------------------------------------------------------------------
-<#=codeStringGenerator.UsingDirectives(inHeader: true)#>
+<#=codeStringGenerator.UsingDirectives(true, true)#>
 <#+
     fileManager.EndBlock();
 }
 
-public void BeginNamespace(CodeGenerationTools code)
+
+public void BeginNamespace(CodeGenerationTools code, string codeNamespace)
 {
-    var codeNamespace = code.VsNamespaceSuggestion();
-    if (!String.IsNullOrEmpty(codeNamespace))
-    {
+	//var codeNamespace = code.VsNamespaceSuggestion();
+	if (!String.IsNullOrEmpty(codeNamespace))
+	{
 #>
 namespace <#=code.EscapeNamespace(codeNamespace)#>
 {
 <#+
-        PushIndent("    ");
-    }
+		//PushIndent("    ");
+		PushIndent(CodeRegion.GetIndent(1));
+	}
 }
 
-public void EndNamespace(CodeGenerationTools code)
+public void EndNamespace(string codeNamespace)
 {
-    if (!String.IsNullOrEmpty(code.VsNamespaceSuggestion()))
+	//var codeNamespace = code.VsNamespaceSuggestion();
+    if (!String.IsNullOrEmpty(codeNamespace))
     {
         PopIndent();
 #>
@@ -280,6 +334,66 @@ public class CodeStringGenerator
         _typeMapper = typeMapper;
         _ef = ef;
     }
+
+	public string SummaryComment(MetadataItem item)
+	{
+		if (item.Documentation != null && item.Documentation.Summary != null)
+		{
+			return PrefixLinesOfMultilineComment(XMLCOMMENT_START + " ", XmlEntityize(item.Documentation.Summary));
+		}
+
+		return "Aucune documentation sur les métadonnées n'est disponible.";
+	}
+
+	public string LongDescriptionCommentElement(MetadataItem item, int indentLevel)
+	{
+		if (item.Documentation != null && !String.IsNullOrEmpty(item.Documentation.LongDescription))
+		{
+			string lineStart = CodeRegion.GetIndent(indentLevel) + XMLCOMMENT_START + " ";
+			string comment = Environment.NewLine;
+			comment += lineStart + "<LongDescription>" + Environment.NewLine;
+			comment += lineStart + PrefixLinesOfMultilineComment(lineStart, XmlEntityize(item.Documentation.LongDescription)) + Environment.NewLine;
+			comment += lineStart + "</LongDescription>";
+			return comment;
+		}
+		return string.Empty;
+	}
+
+	string PrefixLinesOfMultilineComment(string prefix, string comment)
+	{
+		return comment.Replace(Environment.NewLine, Environment.NewLine + prefix);
+	}
+
+	public string ParameterComments(IEnumerable<Tuple<string, string>> parameters, int indentLevel)
+	{
+		System.Text.StringBuilder builder = new System.Text.StringBuilder();
+		foreach (Tuple<string, string> parameter in parameters)
+		{
+			builder.AppendLine();
+			builder.Append(CodeRegion.GetIndent(indentLevel));
+			builder.Append(XMLCOMMENT_START);
+			builder.Append(String.Format(CultureInfo.InvariantCulture, " <param name=\"{0}\">{1}</param>", parameter.Item1, parameter.Item2));
+		}
+		return builder.ToString();
+	}
+
+	string XmlEntityize(string text)
+	{
+		if (string.IsNullOrEmpty(text))
+		{
+			return string.Empty;
+		}
+
+		text = text.Replace("&","&amp;");
+		text = text.Replace("<","&lt;").Replace(">","&gt;");
+		string id = Guid.NewGuid().ToString();
+		text = text.Replace(Environment.NewLine, id);
+		text = text.Replace("\r", "&#xD;").Replace("\n","&#xA;");
+		text = text.Replace(id, Environment.NewLine);
+		return text.Replace("\'","&apos;").Replace("\"","&quot;");
+	}
+
+	const string XMLCOMMENT_START = "///";
 
     public string Property(EdmProperty edmProperty)
     {
@@ -420,7 +534,7 @@ public class CodeStringGenerator
             _code.Escape(entitySet));
     }
 
-    public string UsingDirectives(bool inHeader, bool includeCollections = true)
+    public string UsingDirectives(bool inHeader, bool includeCollections)
     {
         return inHeader == string.IsNullOrEmpty(_code.VsNamespaceSuggestion())
             ? string.Format(
@@ -460,12 +574,12 @@ public class TypeMapper
 
     public string GetTypeName(TypeUsage typeUsage)
     {
-        return typeUsage == null ? null : GetTypeName(typeUsage.EdmType, _ef.IsNullable(typeUsage), modelNamespace: null);
+        return typeUsage == null ? null : GetTypeName(typeUsage.EdmType, _ef.IsNullable(typeUsage),  null);
     }
 
     public string GetTypeName(EdmType edmType)
     {
-        return GetTypeName(edmType, isNullable: null, modelNamespace: null);
+        return GetTypeName(edmType, null, null);
     }
 
     public string GetTypeName(TypeUsage typeUsage, string modelNamespace)
@@ -475,7 +589,7 @@ public class TypeMapper
 
     public string GetTypeName(EdmType edmType, string modelNamespace)
     {
-        return GetTypeName(edmType, isNullable: null, modelNamespace: modelNamespace);
+        return GetTypeName(edmType, null, modelNamespace);
     }
 
     public string GetTypeName(EdmType edmType, bool? isNullable, string modelNamespace)

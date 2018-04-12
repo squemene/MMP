@@ -10,7 +10,7 @@ using ToolsLibrary;
 
 namespace MMP.CoreClassLibrary.DB
 {
-    internal class MMPDatabaseInitializer : AutoMigrateDatabaseInitializer<MMPEntities, Migrations.Configuration>
+    internal class MMPDatabaseInitializer : AutoMigrateDatabaseInitializer<MMPModel.MMPEntities, Migrations.Configuration>
     {
         public MMPDatabaseInitializer() : base()
         {

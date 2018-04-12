@@ -13,7 +13,7 @@ namespace MMP.CoreClassLibrary.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201804111436337_InitialCreate"; }
+            get { return "201804120906224_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source

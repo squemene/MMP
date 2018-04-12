@@ -12,5 +12,5 @@ Dans le cas où la migration se situe dans un autre projet, il faut spéccifier 
 
 Add-Migration InitialCreate -force -project MMP.CoreClassLibrary
 
-POur forcer un migration :
+Pour forcer un migration :
 Update-Database -TargetMigration InitialCreate -force -project MMP.CoreClassLibrary

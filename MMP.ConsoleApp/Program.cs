@@ -10,9 +10,9 @@ namespace MMP.ConsoleApp
     {
         static void Main(string[] args)
         {
-            using (var ctx = new CoreClassLibrary.MMPEntities())
+            using (var ctx = new MMPModel.MMPEntities())
             {
-                ToolsLibrary.Logger.Debug("" + ctx.Users.Count());
+                ToolsLibrary.Logger.Debug("" + ctx.People.Count());
             }
         }
     }

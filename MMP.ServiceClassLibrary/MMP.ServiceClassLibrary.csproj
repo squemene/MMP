@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BF89CE0-CB88-4529-A894-B2A126B8F589}</ProjectGuid>
+    <ProjectGuid>{77673143-E146-43BC-AC22-75ED22BBD2D1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MMP.CoreClassLibrary</RootNamespace>
-    <AssemblyName>MMP.CoreClassLibrary</AssemblyName>
+    <RootNamespace>MMP.ServiceClassLibrary</RootNamespace>
+    <AssemblyName>MMP.ServiceClassLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,16 +31,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Mehdime.Entity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mehdime.Entity.1.0.0\lib\Mehdime.Entity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,72 +50,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DB\MMPDatabaseInitializer.cs" />
-    <Compile Include="Migrations\201804120906224_InitialCreate.cs" />
-    <Compile Include="Migrations\201804120906224_InitialCreate.Designer.cs">
-      <DependentUpon>201804120906224_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="MMPModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MMPModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MMPModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MMPModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="MMPModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MMPModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Partial\MMPModel.Context.cs" />
-    <Compile Include="Person.cs">
-      <DependentUpon>MMPModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\PersonRepository.cs">
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Repository.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="MMPModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MMPModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <None Include="MMPModel.edmx.diagram">
-      <DependentUpon>MMPModel.edmx</DependentUpon>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Migrations\howto.txt" />
-    <Content Include="MMPModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MMPModel.Context.cs</LastGenOutput>
-      <DependentUpon>MMPModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="MMPModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MMPModel.edmx</DependentUpon>
-      <LastGenOutput>MMPModel.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\MMP.CoreClassLibrary\MMP.CoreClassLibrary.csproj">
+      <Project>{8bf89ce0-cb88-4529-a894-b2a126b8f589}</Project>
+      <Name>MMP.CoreClassLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ToolsLibrary\ToolsLibrary.csproj">
       <Project>{252fc9f8-9814-4de9-a5aa-26603ecba3eb}</Project>
       <Name>ToolsLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804120906224_InitialCreate.resx">
-      <DependentUpon>201804120906224_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Repository\Repository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Repository.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

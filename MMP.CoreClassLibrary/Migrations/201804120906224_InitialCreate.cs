@@ -8,11 +8,11 @@ namespace MMP.CoreClassLibrary.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Users",
+                "dbo.People",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        Name = c.String(),
+                        Id = c.Int(nullable: false, identity: true),
+                        FullName = c.String(),
                         Email = c.String(),
                         CreatedOn = c.DateTime(nullable: false),
                     })
@@ -22,7 +22,7 @@ namespace MMP.CoreClassLibrary.Migrations
         
         public override void Down()
         {
-            DropTable("dbo.Users");
+            DropTable("dbo.People");
         }
     }
 }

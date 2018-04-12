@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.CoreClassLibrary", "MMP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolsLibrary", "ToolsLibrary\ToolsLibrary.csproj", "{252FC9F8-9814-4DE9-A5AA-26603ECBA3EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.ServiceClassLibrary", "MMP.ServiceClassLibrary\MMP.ServiceClassLibrary.csproj", "{77673143-E146-43BC-AC22-75ED22BBD2D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{252FC9F8-9814-4DE9-A5AA-26603ECBA3EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{252FC9F8-9814-4DE9-A5AA-26603ECBA3EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{252FC9F8-9814-4DE9-A5AA-26603ECBA3EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77673143-E146-43BC-AC22-75ED22BBD2D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77673143-E146-43BC-AC22-75ED22BBD2D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77673143-E146-43BC-AC22-75ED22BBD2D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77673143-E146-43BC-AC22-75ED22BBD2D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
