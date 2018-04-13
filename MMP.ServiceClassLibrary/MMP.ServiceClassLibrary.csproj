@@ -50,17 +50,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockModel\MockUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\BookRepository.cs">
-      <DependentUpon>Repository.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\PersonRepository.cs">
-      <DependentUpon>Repository.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Repository\Partial\UserRepository.cs" />
     <Compile Include="Repository\Repository.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\UserRepository.cs">
+      <DependentUpon>Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Partial\UserService.cs" />
+    <Compile Include="Service\Service.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Service\ServiceFactory.cs" />
+    <Compile Include="Service\UserService.cs">
+      <DependentUpon>Service.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +91,14 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Repository.cs</LastGenOutput>
     </Content>
+    <Content Include="Service\Service.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Service.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

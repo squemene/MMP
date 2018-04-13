@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MMPModel.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,11 @@ namespace MMP.ConsoleApp
     {
         static void Main(string[] args)
         {
-            using (var ctx = new MMPModel.MMPEntities())
-            {
-                ToolsLibrary.Logger.Debug("" + ctx.People.Count());
-            }
+            //var svcProvider = new ServiceFactory();
+            //var personSvc = svcProvider.Get<PersonService>();
+
+            //var mary = personSvc.;
+
         }
     }
 }

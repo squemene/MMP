@@ -49,12 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Book.cs">
-      <DependentUpon>MMPModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="BookEnumType.cs">
-      <DependentUpon>MMPModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DB\MMPDatabaseInitializer.cs" />
     <Compile Include="Migrations\201804120906224_InitialCreate.cs" />
     <Compile Include="Migrations\201804120906224_InitialCreate.Designer.cs">
@@ -77,19 +71,18 @@
       <DependentUpon>MMPModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Partial\MMPModel.Context.cs" />
-    <Compile Include="Person.cs">
+    <Compile Include="Partial\Model\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User.cs">
       <DependentUpon>MMPModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <EntityDeploy Include="MMPModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MMPModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
     <None Include="MMPModel.edmx.diagram">
       <DependentUpon>MMPModel.edmx</DependentUpon>
     </None>
@@ -99,8 +92,8 @@
     <Content Include="Migrations\howto.txt" />
     <Content Include="MMPModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MMPModel.Context.cs</LastGenOutput>
       <DependentUpon>MMPModel.edmx</DependentUpon>
+      <LastGenOutput>MMPModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="MMPModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

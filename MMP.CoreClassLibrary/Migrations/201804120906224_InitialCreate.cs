@@ -8,13 +8,15 @@ namespace MMP.CoreClassLibrary.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.People",
+                "dbo.Users",
                 c => new
                     {
-                        Id = c.Int(nullable: false, identity: true),
-                        FullName = c.String(),
-                        Email = c.String(),
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(),
                         CreatedOn = c.DateTime(nullable: false),
+                        CreditScore = c.Int(nullable: false),
+                        Email = c.String(),
+                        WelcomeEmailSent = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -22,7 +24,7 @@ namespace MMP.CoreClassLibrary.Migrations
         
         public override void Down()
         {
-            DropTable("dbo.People");
+            DropTable("dbo.Users");
         }
     }
 }

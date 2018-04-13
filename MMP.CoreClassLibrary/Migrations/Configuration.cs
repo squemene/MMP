@@ -20,11 +20,11 @@ namespace MMP.CoreClassLibrary.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
 
-            context.People.AddOrUpdate(
-              p => p.FullName,
-              new Person { FullName = "Andrew Peters", Email = "andrew.peters@mail.com", CreatedOn = DateTime.Now },
-              new Person { FullName = "Brice Lambson", Email = "brice.lambson@mail.com", CreatedOn = DateTime.Now },
-              new Person { FullName = "Rowan Miller", Email = "rowan.miller@mail.com", CreatedOn = DateTime.Now }
+            context.Users.AddOrUpdate(
+              p => p.Name,
+              new User { Name = "Andrew Peters", Email = "andrew.peters@mail.com", CreatedOn = DateTime.Now },
+              new User { Name = "Brice Lambson", Email = "brice.lambson@mail.com", CreatedOn = DateTime.Now },
+              new User { Name = "Rowan Miller", Email = "rowan.miller@mail.com", CreatedOn = DateTime.Now }
             );
 
         }

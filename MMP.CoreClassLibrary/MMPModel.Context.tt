@@ -57,6 +57,7 @@ using System.Linq;
 /// </summary>
 <#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext
 {
+
 <#
 	region.Begin("Constructeurs", 2);
 #>
@@ -91,7 +92,7 @@ foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
     }
     
 	/// <summary>
-	/// Initialise un nouvel objet <#=code.Escape(container)#>.
+	/// Initialisez un nouvel objet <#=code.Escape(container)#>.
 	/// </summary>
     /// <param name="nameOrConnectionString">Le nom ou la chaine de connexion à la base de données.</param>
 	public <#=code.Escape(container)#>(string nameOrConnectionString) 
@@ -120,51 +121,42 @@ foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
 		OnContextCreated(nameOrConnectionString);
 	}
 <#
-	region.End(2);
+	region.End();
 #>
 <#
-	region.Begin("Méthodes partielles", 2);
+	region.Begin("Méthodes partielles");
 #>
-	
-	/// <summary>
-    /// Méthode appellée une fois le DbContext créé
-    /// </summary>
+
     partial void OnContextCreated();
 
-    
-    /// <summary>
-    /// Méthode appellée une fois le DbContext créé
-    /// </summary>
-    /// <param name="nameOrConnectionString">Le nom ou la chaine de connexion à la base de données.</param>
     partial void OnContextCreated(string nameOrConnectionString);
 <#
-	region.End(2);
+	region.End();
 
 if(container.BaseEntitySets.OfType<EntitySet>().Any())
 {
 #>
 <#
-	region.Begin("Propriétés DbSet", 2);
-#>
+	region.Begin("Propriétés DbSet");
 
-<#
     foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
     {
 #>
+
 	/// <summary>
 	/// DbSet d'accès aux entités du type <#=typeMapper.GetTypeName(entitySet.ElementType)#>
 	/// </summary>
     <#=codeStringGenerator.DbSet(entitySet)#>
 <#
     }
-	region.End(2);
+	region.End();
 #>
 <#
 }
 
 if(container.FunctionImports.Any())
 {
-	region.Begin("Importations de fonction / procédures stockées", 2);
+	region.Begin("Importations de fonction / procédures stockées");
 #>
 
 <#
@@ -182,7 +174,7 @@ if(container.FunctionImports.Any())
 <# 
         WriteFunctionImport(typeMapper, codeStringGenerator, edmFunction, modelNamespace, false);
     }
-	region.End(2);
+	region.End();
 }
 #>
 }
