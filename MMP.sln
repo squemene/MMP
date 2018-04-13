@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.ConsoleApp", "MMP.ConsoleApp\MMP.ConsoleApp.csproj", "{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.CoreClassLibrary", "MMP.CoreClassLibrary\MMP.CoreClassLibrary.csproj", "{8BF89CE0-CB88-4529-A894-B2A126B8F589}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToolsLibrary", "ToolsLibrary\ToolsLibrary.csproj", "{252FC9F8-9814-4DE9-A5AA-26603ECBA3EB}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.ServiceClassLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.ServiceClassLibrary.UnitTestProject", "MMP.ServiceClassLibrary.UnitTestProject\MMP.ServiceClassLibrary.UnitTestProject.csproj", "{8A544844-228C-482D-9D39-9801FC931C4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMP.ServiceClassLibrary.ConsoleApp", "MMP.ServiceClassLibrary.ConsoleApp\MMP.ServiceClassLibrary.ConsoleApp.csproj", "{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BF89CE0-CB88-4529-A894-B2A126B8F589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8BF89CE0-CB88-4529-A894-B2A126B8F589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BF89CE0-CB88-4529-A894-B2A126B8F589}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{8A544844-228C-482D-9D39-9801FC931C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A544844-228C-482D-9D39-9801FC931C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A544844-228C-482D-9D39-9801FC931C4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF78818-7D05-47FE-B69C-7EAC8F63AF44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
