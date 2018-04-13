@@ -22,9 +22,9 @@ namespace MMP.CoreClassLibrary.Migrations
 
             context.Users.AddOrUpdate(
               p => p.Name,
-              new User { Name = "Andrew Peters", Email = "andrew.peters@mail.com", CreatedOn = DateTime.Now },
-              new User { Name = "Brice Lambson", Email = "brice.lambson@mail.com", CreatedOn = DateTime.Now },
-              new User { Name = "Rowan Miller", Email = "rowan.miller@mail.com", CreatedOn = DateTime.Now }
+              new User { Id = Guid.NewGuid(), Name = "Andrew Peters", Email = "andrew.peters@mail.com", CreatedOn = DateTime.Now },
+              new User { Id = Guid.NewGuid(), Name = "Brice Lambson", Email = "brice.lambson@mail.com", CreatedOn = DateTime.Now },
+              new User { Id = Guid.NewGuid(), Name = "Rowan Miller", Email = "rowan.miller@mail.com", CreatedOn = DateTime.Now }
             );
 
         }
