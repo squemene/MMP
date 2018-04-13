@@ -44,6 +44,17 @@ namespace MMPModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            #region Configuration des Entités du modèle
+
+            modelBuilder.Properties().Where(p => p.Name == "Id").Configure(p => p.IsKey());
+
+            //User
+            modelBuilder.Entity<User>().Property(p => p.Name).IsRequired();
+            modelBuilder.Entity<User>().HasOptional(p => p.Email);
+            //modelBuilder.Entity<User>().HasRequired(p => p.Object).WithMany(p => p.Objects).WillCascadeOnDelete(true);
+
+            #endregion
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -61,9 +72,8 @@ namespace MMPModel
             catch (DbUpdateException ex)
             {
                 Exception exception = GetInnerException(ex);
-                var sqlException = exception as SqlException;
 
-                if (sqlException != null)
+                if (exception is SqlException sqlException)
                 {
                     SqlError sqlError;
                     string constraintName;
